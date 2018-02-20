@@ -11,12 +11,15 @@ class MsMediaFile:
 
 	def __init__(self, db_dict):
 		self.db_dict = db_dict
-		self.mf_info_dict = self.blob_to_array(self.db_dict["mf.media"])
-		self.create_ac_mf_dict()
-		self.create_ac_mfp_dict()
+		self.mf_info_dict = self.blob_to_array(self.db_dict["media"])
+		#self.create_ac_mf_dict()
+		#self.create_ac_mfp_dict()
 
 	def blob_to_array(self, blob):
-		return phpserialize.unserialize(zlib.decompress(blob))
+		try:
+			return phpserialize.unserialize(zlib.decompress(blob))
+		except:
+			return phpserialize.unserialize(blob.decode('base64'))
 
 	def is_published(self):
 		if self.db_dict['mf.published'] is None:
